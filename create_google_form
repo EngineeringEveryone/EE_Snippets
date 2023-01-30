@@ -1,0 +1,24 @@
+import json
+import requests
+from typing import List
+
+def create_quiz(api_key: str, form_id: str, questions: List[str]) -> requests.Response:
+    """
+    A function that creates a quiz on Google Forms using the given API key, form ID, and list of questions.
+    :param api_key: The API key for the Google Forms API.
+    :param form_id: The ID of the Google Form to add the questions to.
+    :param questions: A list of questions in the form of strings.
+    :return: requests.Response object
+    """
+    # The base URL for the Google Forms API
+    base_url = f"https://docs.google.com/forms/d/{form_id}/edit"
+
+    # Iterate through the questions and add them to the form
+    for question in questions:
+        url = f"{base_url}/addItem?itemTitle={question}&itemType=MULTIPLE_CHOICE"
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
+        response = requests.post(url, headers=headers)
+        return response
